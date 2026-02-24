@@ -55,7 +55,7 @@ export default function Header() {
               Portfolio <BsArrowRight className="text-xs" />
             </a>
             <a
-              href="https://kilianbalaguer-links.vercel.app"
+              href="https://kilianbalaguer-linkpage.vercel.app"
               className="px-4 py-2 text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white transition-all inline-flex items-center gap-1"
             >
               Links <BsArrowRight className="text-xs" />
