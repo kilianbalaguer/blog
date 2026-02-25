@@ -4,13 +4,34 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { BsArrowRight } from "react-icons/bs";
 import { BlogPost } from "@/lib/github";
+import { useLanguage } from "@/context/language-context";
+import { translations } from "@/lib/translations";
+import { translateText } from "@/lib/translate";
+import { useState, useEffect } from "react";
 
 interface BlogPostCardProps {
   post: BlogPost;
 }
 
 export default function BlogPostCard({ post }: BlogPostCardProps) {
-  const date = new Date(post.created_at).toLocaleDateString("en-US", {
+  const { language } = useLanguage();
+  const t = translations[language];
+  const [translatedTitle, setTranslatedTitle] = useState(post.title);
+  const [translatedExcerpt, setTranslatedExcerpt] = useState("");
+  const [isTranslating, setIsTranslating] = useState(false);
+
+  // Map language to locale for date formatting
+  const localeMap: Record<string, string> = {
+    en: "en-US",
+    fr: "fr-FR",
+    ar: "ar-SA",
+    nl: "nl-NL",
+    de: "de-DE",
+    es: "es-ES",
+    ko: "ko-KR",
+  };
+
+  const date = new Date(post.created_at).toLocaleDateString(localeMap[language] || "en-US", {
     year: "numeric",
     month: "long",
     day: "numeric",
@@ -25,6 +46,35 @@ export default function BlogPostCard({ post }: BlogPostCardProps) {
         .trim()
     : "No content available";
 
+  // Translate title and excerpt when language changes
+  useEffect(() => {
+    const translateContent = async () => {
+      if (language === "en") {
+        setTranslatedTitle(post.title);
+        setTranslatedExcerpt(excerpt);
+        return;
+      }
+
+      setIsTranslating(true);
+      try {
+        const [title, excerptTranslated] = await Promise.all([
+          translateText(post.title, language),
+          translateText(excerpt, language),
+        ]);
+        setTranslatedTitle(title);
+        setTranslatedExcerpt(excerptTranslated);
+      } catch (error) {
+        console.error("Translation error:", error);
+        setTranslatedTitle(post.title);
+        setTranslatedExcerpt(excerpt);
+      } finally {
+        setIsTranslating(false);
+      }
+    };
+
+    translateContent();
+  }, [language, post.title, excerpt]);
+
   return (
     <motion.article
       initial={{ opacity: 0, y: 20 }}
@@ -37,12 +87,20 @@ export default function BlogPostCard({ post }: BlogPostCardProps) {
           {date}
         </time>
         <h3 className="text-2xl font-bold mt-2 group-hover:text-gray-700 dark:group-hover:text-gray-200 transition-colors">
-          {post.title}
+          {isTranslating ? (
+            <span className="opacity-50">{post.title}</span>
+          ) : (
+            translatedTitle
+          )}
         </h3>
       </div>
 
       <p className="text-gray-600 dark:text-gray-400 mb-4 line-clamp-3">
-        {excerpt}...
+        {isTranslating ? (
+          <span className="opacity-50">{excerpt}...</span>
+        ) : (
+          `${translatedExcerpt || excerpt}...`
+        )}
       </p>
 
       <div className="flex gap-2 flex-wrap mb-4">
@@ -60,7 +118,7 @@ export default function BlogPostCard({ post }: BlogPostCardProps) {
         href={`/blog/${post.number}`}
         className="inline-flex items-center gap-2 text-black dark:text-white font-medium group-hover:gap-3 transition-all"
       >
-        Read More
+        {t.readMore}
         <BsArrowRight className="group-hover:translate-x-1 transition-transform" />
       </Link>
     </motion.article>

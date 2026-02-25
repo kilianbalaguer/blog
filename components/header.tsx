@@ -1,32 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { BsSun, BsMoon } from "react-icons/bs";
 import { BsArrowRight } from "react-icons/bs";
 import Link from "next/link";
+import LanguageSwitch from "./language-switch";
+import { useLanguage } from "@/context/language-context";
+import { translations } from "@/lib/translations";
 
 export default function Header() {
-  const [isDark, setIsDark] = useState(false);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-    setIsDark(document.documentElement.classList.contains("dark"));
-  }, []);
-
-  const toggleTheme = () => {
-    if (!document.documentElement.classList.contains("dark")) {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-      setIsDark(true);
-    } else {
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem("theme", "light");
-      setIsDark(false);
-    }
-  };
-
-  if (!mounted) return null;
+  const { language } = useLanguage();
+  const t = translations[language];
 
   return (
     <header className="z-[999] relative">
@@ -39,34 +21,28 @@ export default function Header() {
               href="/"
               className="px-4 py-2 text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white transition-all"
             >
-              Home
+              {t.home}
             </Link>
             <Link
               href="/blog"
               className="px-4 py-2 text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white transition-all"
             >
-              Blog
+              {t.blog}
             </Link>
             <div className="h-6 w-px bg-gray-300 dark:bg-gray-700" />
             <a
               href="https://kilianbalaguer-portfolio.vercel.app"
               className="px-4 py-2 text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white transition-all inline-flex items-center gap-1"
             >
-              Portfolio <BsArrowRight className="text-xs" />
+              {t.portfolio} <BsArrowRight className="text-xs" />
             </a>
             <a
               href="https://kilianbalaguer-linkpage.vercel.app"
               className="px-4 py-2 text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white transition-all inline-flex items-center gap-1"
             >
-              Links <BsArrowRight className="text-xs" />
+              {t.links} <BsArrowRight className="text-xs" />
             </a>
-            <button
-              onClick={toggleTheme}
-              aria-label="Toggle theme"
-              className="w-10 h-10 bg-white dark:bg-black border-2 border-black dark:border-white md:hover:bg-black md:hover:text-white md:dark:hover:bg-white md:dark:hover:text-black active:scale-95 transition-all flex items-center justify-center"
-            >
-              {isDark ? <BsSun className="text-lg" /> : <BsMoon className="text-lg" />}
-            </button>
+            <LanguageSwitch />
           </div>
         </nav>
       </div>

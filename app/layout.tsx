@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
+import ThemeContextProvider from "@/context/theme-context";
+import LanguageContextProvider from "@/context/language-context";
+import ThemeSwitch from "@/components/theme-switch";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -41,8 +44,13 @@ export default function RootLayout({
       >
         <div className="fixed inset-0 -z-10 bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#1a1a1a_1px,transparent_1px),linear-gradient(to_bottom,#1a1a1a_1px,transparent_1px)] bg-[size:4rem_4rem] transition-all duration-300" />
         
-        {children}
-        <Toaster position="top-right" />
+        <ThemeContextProvider>
+          <LanguageContextProvider>
+            {children}
+            <Toaster position="top-right" />
+            <ThemeSwitch />
+          </LanguageContextProvider>
+        </ThemeContextProvider>
       </body>
     </html>
   );
