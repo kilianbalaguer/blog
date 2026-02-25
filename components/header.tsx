@@ -14,8 +14,8 @@ export default function Header() {
 
   return (
     <header className="z-[999] relative">
-      <div className={`fixed top-4 left-4 right-4 sm:top-6 sm:left-6 sm:right-6 h-16 bg-white/80 dark:bg-black/80 backdrop-blur-sm border-b-2 border-black dark:border-white max-w-7xl mx-auto transition-all duration-300 ${
-        isMenuOpen ? 'opacity-0 scale-95' : 'opacity-100 scale-100'
+      <div className={`fixed top-4 left-4 right-4 sm:top-6 sm:left-6 sm:right-6 bg-white/80 dark:bg-black/80 backdrop-blur-sm border-b-2 border-black dark:border-white max-w-7xl mx-auto transition-all duration-300 ${
+        isMenuOpen ? 'h-12 p-0 opacity-0 scale-95' : 'h-16 p-0 opacity-100 scale-100'
       }`}>
         <nav className="h-full px-4 sm:px-8 flex items-center justify-between">
           <div className="text-2xl font-black">KB</div>

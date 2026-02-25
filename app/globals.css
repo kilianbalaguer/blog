@@ -104,6 +104,15 @@ html.dark {
   }
 }
 
+@keyframes navbarMorph {
+  0% {
+    height: 4rem;
+  }
+  100% {
+    height: 3rem;
+  }
+}
+
 .animate-fadeIn {
   animation: fadeIn 0.2s ease-out;
 }
