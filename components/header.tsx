@@ -14,7 +14,9 @@ export default function Header() {
 
   return (
     <header className="z-[999] relative">
-      <div className="fixed top-4 left-4 right-4 sm:top-6 sm:left-6 sm:right-6 h-16 bg-white/80 dark:bg-black/80 backdrop-blur-sm border-b-2 border-black dark:border-white max-w-7xl mx-auto transition-all duration-300">
+      <div className={`fixed top-4 left-4 right-4 sm:top-6 sm:left-6 sm:right-6 h-16 bg-white/80 dark:bg-black/80 backdrop-blur-sm border-b-2 border-black dark:border-white max-w-7xl mx-auto transition-all duration-300 ${
+        isMenuOpen ? 'opacity-0 scale-95' : 'opacity-100 scale-100'
+      }`}>
         <nav className="h-full px-4 sm:px-8 flex items-center justify-between">
           <div className="text-2xl font-black">KB</div>
           
@@ -51,7 +53,9 @@ export default function Header() {
             <LanguageSwitch />
             <button
               type="button"
-              className="w-10 h-10 bg-white dark:bg-black border-2 border-black dark:border-white md:hover:bg-black md:hover:text-white md:dark:hover:bg-white md:dark:hover:text-black active:scale-95 transition-all font-medium flex items-center justify-center touch-manipulation"
+              className={`w-10 h-10 bg-white dark:bg-black border-2 border-black dark:border-white md:hover:bg-black md:hover:text-white md:dark:hover:bg-white md:dark:hover:text-black active:scale-95 transition-all duration-300 font-medium flex items-center justify-center touch-manipulation ${
+                isMenuOpen ? 'rotate-90' : ''
+              }`}
               aria-label="Toggle menu"
               aria-expanded={isMenuOpen}
               onClick={() => setIsMenuOpen((open) => !open)}
@@ -63,8 +67,8 @@ export default function Header() {
       </div>
 
       {isMenuOpen && (
-        <div className="fixed inset-0 z-[998] bg-white/95 dark:bg-black/95 backdrop-blur-sm p-6 md:hidden">
-          <div className="max-w-2xl mx-auto">
+        <div className="fixed inset-0 z-[998] bg-white/95 dark:bg-black/95 backdrop-blur-sm p-6 md:hidden animate-expandFromTop">
+          <div className="max-w-2xl mx-auto animate-slideDown">
             <div className="flex items-center justify-between mb-8">
               <div className="text-2xl font-black">KB</div>
               <button
@@ -74,14 +78,17 @@ export default function Header() {
                   e.currentTarget.blur();
                 }}
                 aria-label="Close menu"
-                className="w-10 h-10 bg-black dark:bg-white text-white dark:text-black active:scale-95 transition-all duration-300 text-2xl font-black touch-manipulation flex items-center justify-center border-2 border-black dark:border-white"
+                className="w-10 h-10 bg-black dark:bg-white text-white dark:text-black active:scale-95 transition-all duration-300 text-2xl font-black touch-manipulation flex items-center justify-center border-2 border-black dark:border-white animate-rotate"
               >
                 ✕
               </button>
             </div>
 
             <ul className="flex flex-col gap-6">
-              <li>
+              <li 
+                className="animate-slideIn"
+                style={{ animationDelay: '0.2s', animationFillMode: 'backwards' }}
+              >
                 <Link
                   href="/"
                   className="block text-2xl font-black hover:translate-x-2 transition-transform"
@@ -90,7 +97,10 @@ export default function Header() {
                   {t.home}
                 </Link>
               </li>
-              <li>
+              <li 
+                className="animate-slideIn"
+                style={{ animationDelay: '0.3s', animationFillMode: 'backwards' }}
+              >
                 <Link
                   href="/blog"
                   className="block text-2xl font-black hover:translate-x-2 transition-transform"
@@ -99,7 +109,10 @@ export default function Header() {
                   {t.blog}
                 </Link>
               </li>
-              <li>
+              <li 
+                className="animate-slideIn"
+                style={{ animationDelay: '0.4s', animationFillMode: 'backwards' }}
+              >
                 <a
                   href="https://kilianbalaguer-portfolio.vercel.app"
                   className="block text-2xl font-black hover:translate-x-2 transition-transform"
@@ -108,7 +121,10 @@ export default function Header() {
                   {t.portfolio} <BsArrowRight className="inline text-base" />
                 </a>
               </li>
-              <li>
+              <li 
+                className="animate-slideIn"
+                style={{ animationDelay: '0.5s', animationFillMode: 'backwards' }}
+              >
                 <a
                   href="https://kilianbalaguer-linkpage.vercel.app"
                   className="block text-2xl font-black hover:translate-x-2 transition-transform"
